@@ -48,35 +48,37 @@ const map = new maplibregl.Map({
                 id: "osm",
                 type: "raster",
                 source: "osm"
+            },
+            {
+                id: "fill",
+                type: "fill",
+                source: "badhra",
+                "source-layer": "badhra_standard_merged",
+                paint: {
+                    "fill-color": "#0080ff",
+                    "fill-opacity": 0.35
+                }
+            },
+            {
+                id: "outline",
+                type: "line",
+                source: "badhra",
+                "source-layer": "badhra_standard_merged",
+                paint: {
+                    "line-color": "#000000",
+                    "line-width": 1
+                }
             }
         ]
     },
-    center: [76.05, 28.60],
-    zoom: 10
+    center: [75.958, 28.506],
+    zoom: 11
 });
 
 map.addControl(new maplibregl.NavigationControl());
 
-map.on("load", async () => {
-    try {
-        const p = new pmtiles.PMTiles(
-            "https://28sharmaji1702-lgtm.github.io/BADHRA.MAP/badhra.pmtiles"
-        );
-
-        const header = await p.getHeader();
-        const metadata = await p.getMetadata();
-
-        console.log("HEADER:", header);
-        console.log("METADATA:", metadata);
-
-        alert(
-            "Open F12 → Console and send screenshot of HEADER/METADATA"
-        );
-
-    } catch (err) {
-        console.error(err);
-        alert("PMTiles Error: " + err);
-    }
+map.on("error", function(e) {
+    console.log(e.error);
 });
 </script>
 
